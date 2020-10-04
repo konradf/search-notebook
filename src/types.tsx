@@ -1,4 +1,5 @@
 export interface SearchResult {
+  id: string;
   query_id: string;
   author: string;
   points: number;
@@ -12,12 +13,12 @@ export interface SearchQuery {
   search_string: string;
   created_at: string;
   hits: number;
-  results: SearchResult[];
+  results: string[];
 }
 
 export interface SearchNotebook {
   id: number;
   title: string;
   created_at: string;
-  results: SearchResult[];
+  results: string[];
 }

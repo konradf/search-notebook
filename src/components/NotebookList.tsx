@@ -10,7 +10,7 @@ interface NotebookListProps {
 }
 
 export const NotebookList: React.FunctionComponent<NotebookListProps> = ({ notebooks, onRemove, children }) => {
-  const handleRemove = (id: number) => () => {
+  const createRemoveHandler = (id: number) => () => {
     onRemove(id);
   };
 
@@ -21,7 +21,7 @@ export const NotebookList: React.FunctionComponent<NotebookListProps> = ({ noteb
           <ListItem key={id} button>
             <ListItemText primary={title} secondary={formatDateString(created_at)} />
             <ListItemSecondaryAction>
-              <NotebookRemove title={title} onRemove={handleRemove(id)} />
+              <NotebookRemove title={title} onRemove={createRemoveHandler(id)} />
             </ListItemSecondaryAction>
           </ListItem>
         ))}
