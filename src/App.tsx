@@ -31,7 +31,7 @@ const App = () => {
 
   const handleCreateNotebook = (notebook: NewNotebook) => {
     setNotebooks([...notebooks, createNotebook(notebook, notebooks)]);
-    showNotification({ message: 'Notebook has been created', variant: NotificationVariant.sucess });
+    showNotification({ message: 'Notebook has been created', variant: NotificationVariant.success });
   };
 
   const handleRemoveNotebook = (id: number) => {
@@ -43,7 +43,7 @@ const App = () => {
     const updatedNotebooks = addResultToNotebook(result, notebookId, notebooks);
     if (updatedNotebooks !== null) {
       setNotebooks(updatedNotebooks);
-      showNotification({ message: 'Result has been saved', variant: NotificationVariant.sucess });
+      showNotification({ message: 'Result has been saved', variant: NotificationVariant.success });
       return;
     }
     showNotification({ message: 'Result was already added to that Notebook', variant: NotificationVariant.warning });

@@ -3,7 +3,7 @@ import { Snackbar } from '@material-ui/core';
 import { Alert as MuiAlert, AlertProps } from '@material-ui/lab';
 
 export enum NotificationVariant {
-  sucess = 'success',
+  success = 'success',
   warning = 'warning',
   info = 'info',
   error = 'error',

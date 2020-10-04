@@ -5,7 +5,7 @@ export const useNotification = () => {
   const [notification, setNotification] = React.useState({
     open: false,
     message: '',
-    variant: NotificationVariant.sucess,
+    variant: NotificationVariant.success,
   });
 
   const hideNotification = () => {
