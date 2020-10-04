@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 import { Box, CircularProgress, List, Paper, Typography } from '@material-ui/core';
 import { ResultAdd } from './ResultAdd';
 import { Result } from './Result';
-import { SearchNotebook, SearchQuery, SearchResult } from '../types';
 import { fetchResults } from '../libs/searchApi';
 import { createSearchQuery } from '../libs/query';
 import { saveQuery } from '../libs/storage';
+import { SearchNotebook, SearchQuery, SearchResult } from '../types';
 
 interface ResultsProps {
   query: string;

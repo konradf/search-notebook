@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ import {
 } from './libs/notebook';
 import { SearchNotebook, SearchResult } from './types';
 import { useNotification } from './hooks/useNotification';
-import { MESSAGE } from './libs/messages';
+import { MESSAGE } from './constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {

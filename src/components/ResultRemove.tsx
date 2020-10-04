@@ -1,9 +1,13 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Icon, IconButton, ListItemSecondaryAction } from '@material-ui/core';
+import * as React from 'react';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Icon,
+  IconButton,
+  ListItemSecondaryAction,
+} from '@material-ui/core';
 
 interface ResultRemoveProps {
   title: string;
@@ -28,13 +32,8 @@ export const ResultRemove: React.FunctionComponent<ResultRemoveProps> = ({ title
           <Icon>delete_outline</Icon>
         </IconButton>
       </ListItemSecondaryAction>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="remove-result">
+        <DialogTitle id="remove-result">
           Are you sure to remove <strong>{title}</strong> ?
         </DialogTitle>
         <DialogActions>

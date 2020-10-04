@@ -1,13 +1,18 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import { DialogContent, Icon, IconButton, ListItemSecondaryAction } from '@material-ui/core';
-import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import * as React from 'react';
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContentText,
+  DialogContent,
+  Icon,
+  IconButton,
+  ListItemSecondaryAction,
+} from '@material-ui/core';
 import { SearchNotebook } from '../types';
 
 interface ResultAddProps {

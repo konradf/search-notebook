@@ -1,10 +1,10 @@
-import React from 'react';
+import * as React from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import { List, Paper, Typography } from '@material-ui/core';
 import { findNotebookById } from '../libs/notebook';
 import { Result } from './Result';
-import { SearchNotebook, SearchResult } from '../types';
 import { ResultRemove } from './ResultRemove';
+import { SearchNotebook, SearchResult } from '../types';
 
 interface NotebookResultsProps {
   notebooks: SearchNotebook[];

@@ -1,9 +1,9 @@
-import React from 'react';
-import { formatDistance } from '../libs/dateHelpers';
+import * as React from 'react';
 import { Chip, Link, ListItem, ListItemText, Tooltip, Typography } from '@material-ui/core';
-import { SearchQuery, SearchResult } from '../types';
+import { formatDistance } from '../libs/dateHelpers';
 import { getQueries } from '../libs/storage';
 import { getQueryById } from '../libs/query';
+import { SearchQuery, SearchResult } from '../types';
 
 interface ResultProps {
   result: SearchResult;

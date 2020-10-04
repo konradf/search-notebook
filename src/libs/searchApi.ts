@@ -30,6 +30,8 @@ const fetchResults: FetchResults = async (query, page = 1) => {
   const response = await fetch(getApiUrl({ query, page }));
   const { hits, nbHits } = await response.json();
 
+  // TODO: Error handling...
+
   return { results: mapResults(query, hits), hits: nbHits };
 };
 

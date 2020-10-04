@@ -1,9 +1,5 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { Icon, IconButton } from '@material-ui/core';
+import * as React from 'react';
+import { Icon, IconButton, Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core';
 
 interface NotebookRemoveProps {
   title: string;
@@ -26,13 +22,8 @@ export const NotebookRemove: React.FunctionComponent<NotebookRemoveProps> = ({ t
       <IconButton edge="end" aria-label="remove" onClick={handleOpen}>
         <Icon color="secondary">delete_forever</Icon>
       </IconButton>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="remove-notebook">
+        <DialogTitle id="remove-notebook">
           Are you sure to remove <strong>{title}</strong> ?
         </DialogTitle>
         <DialogActions>

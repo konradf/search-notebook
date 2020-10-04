@@ -1,14 +1,8 @@
-import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { SearchQuery } from '../types';
+import * as React from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
 import { getQueries } from '../libs/storage';
 import { getQueriesSummary } from '../libs/query';
+import { SearchQuery } from '../types';
 
 export const Statistics: React.FunctionComponent = () => {
   const [queries] = React.useState<SearchQuery[]>(getQueries());
@@ -17,17 +11,17 @@ export const Statistics: React.FunctionComponent = () => {
   console.log(Object.keys(summary));
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <Table aria-label="statistics">
         <TableHead>
           <TableRow>
             <TableCell>Query</TableCell>
-            <TableCell align="right">Average hits for last day</TableCell>
-            <TableCell align="right">Average hits for last week</TableCell>
+            <TableCell align="right">Average hits last day</TableCell>
+            <TableCell align="right">Average hits last week</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {Object.keys(summary).map((query) => (
-            <TableRow key={query}>
+            <TableRow key={query} hover>
               <TableCell component="th" scope="row">
                 {query}
               </TableCell>

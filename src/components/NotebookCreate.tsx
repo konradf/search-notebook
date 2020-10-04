@@ -1,12 +1,15 @@
-import React from 'react';
-import { Box, Icon } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import * as React from 'react';
+import {
+  Box,
+  Icon,
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
 import { NewNotebook } from '../libs/notebook';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -52,8 +55,8 @@ export const NotebookCreate: React.FunctionComponent<NotebookCreateProps> = ({ o
       <Button variant="contained" color="primary" onClick={handleOpen} startIcon={<Icon>add_circle</Icon>}>
         Add
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create new Notebook</DialogTitle>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="create-notebook">
+        <DialogTitle id="create-notebook">Create new Notebook</DialogTitle>
         <DialogContent>
           <DialogContentText>Please provide a title for new Notebook</DialogContentText>
           <TextField

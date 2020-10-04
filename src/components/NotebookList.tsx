@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Divider, List, ListItem, ListItemSecondaryAction, ListItemText, Paper } from '@material-ui/core';
 import { formatDateString } from '../libs/dateHelpers';
