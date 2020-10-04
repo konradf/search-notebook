@@ -1,6 +1,6 @@
 import { SearchNotebook, SearchResult } from '../types';
 import { getCurrentDateString } from './dateHelpers';
-import { saveResult, getNotebooks, getResults } from './storage';
+import { saveResult, getNotebooks, getResults, removeResults } from './storage';
 
 export interface NewNotebook {
   title: string;
@@ -20,7 +20,18 @@ const createNotebook: CreateNotebook = ({ title }, notebooks) => {
   return { id: lastId + 1, title, created_at: getCurrentDateString(), results: [] };
 };
 
-const removeNotebook: RemoveNotebook = (id, notebooks) => notebooks.filter((notebook) => notebook.id !== id);
+const removeNotebook: RemoveNotebook = (id, notebooks) => {
+  const restNotebooks = notebooks.filter((notebook) => notebook.id !== id);
+  const results = findNotebookById(id, notebooks)?.results;
+  if (results && results.length) {
+    // Remove Results which were present only in this Notebook from storage
+    const restResults = restNotebooks.flatMap((notebook) => notebook.results);
+    const resultsToRemove = results.filter((resultId) => !restResults.includes(resultId));
+    removeResults(resultsToRemove);
+  }
+
+  return restNotebooks;
+};
 
 const findNotebookById: FindNotebookById = (id, notebooks) => notebooks.find((notebook) => notebook.id === id) || null;
 

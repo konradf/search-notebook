@@ -25,4 +25,9 @@ const saveResult = (result: SearchResult) => {
   window.localStorage.setItem('results', JSON.stringify([...getResults(), result]));
 };
 
-export { saveNotebooks, getNotebooks, getResults, saveResult };
+const removeResults = (resultIds: string[]) => {
+  const newResults = getResults().filter((result) => !resultIds.includes(result.id));
+  window.localStorage.setItem('results', JSON.stringify(newResults));
+};
+
+export { saveNotebooks, getNotebooks, getResults, saveResult, removeResults };
