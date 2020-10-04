@@ -33,7 +33,7 @@ export const NavigationBar: React.FunctionComponent = ({ children }) => {
           </Typography>
         </Typography>
         {children}
-        <IconButton edge="end" color="inherit">
+        <IconButton edge="end" color="inherit" component={Link} to="/stats">
           <Icon>equalizer</Icon>
         </IconButton>
       </Toolbar>

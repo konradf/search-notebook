@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box, CircularProgress, List, Paper } from '@material-ui/core';
+import { Box, CircularProgress, List, Paper, Typography } from '@material-ui/core';
 import { ResultAdd } from './ResultAdd';
 import { Result } from './Result';
-import { SearchNotebook, SearchResult } from '../types';
+import { SearchNotebook, SearchQuery, SearchResult } from '../types';
 import { fetchResults } from '../libs/searchApi';
+import { createSearchQuery } from '../libs/query';
+import { saveQuery } from '../libs/storage';
 
 interface ResultsProps {
   query: string;
@@ -12,23 +14,34 @@ interface ResultsProps {
 }
 
 export const QueryResults = ({ query, notebooks, onAdd }: ResultsProps) => {
+  const [searchQuery, setSearchQuery] = React.useState<SearchQuery>();
   const [results, setResults] = React.useState<SearchResult[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     setLoading(true);
-    fetchResults(query).then(({ results }) => {
+    fetchResults(query).then(({ results, hits }) => {
+      setSearchQuery(createSearchQuery(query, hits));
       setResults(results);
       setLoading(false);
     });
   }, [query]);
 
+  React.useEffect(() => {
+    if (searchQuery) {
+      saveQuery(searchQuery);
+    }
+  }, [searchQuery]);
+
   const createAddHandler = (result: SearchResult) => (notebookId: number) => {
-    onAdd(result, notebookId);
+    onAdd({ ...result, query_id: searchQuery!.id }, notebookId);
   };
 
   return (
     <Paper variant="outlined">
+      <Typography align="center" variant="h5" component="h1">
+        Results for: <strong>{query}</strong>
+      </Typography>
       {loading ? (
         <Box textAlign="center">
           <CircularProgress />
@@ -36,7 +49,7 @@ export const QueryResults = ({ query, notebooks, onAdd }: ResultsProps) => {
       ) : (
         <List>
           {results.map((result) => (
-            <Result result={result}>
+            <Result result={result} key={result.id}>
               <ResultAdd notebooks={notebooks} onAdd={createAddHandler(result)} title={result.title} />
             </Result>
           ))}

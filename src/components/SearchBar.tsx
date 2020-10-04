@@ -60,6 +60,11 @@ export const SearchBar: React.FunctionComponent<SearchBarProps> = ({ onSearch })
   const classes = useStyles();
   const history = useHistory();
   const isQueryRoute = useRouteMatch('/query');
+  const redirectToQuery = () => {
+    if (!isQueryRoute) {
+      history.push('/query');
+    }
+  };
 
   const [search, setSearch] = React.useState('');
   const searchValue = useDebounce(search, 500);
@@ -73,9 +78,7 @@ export const SearchBar: React.FunctionComponent<SearchBarProps> = ({ onSearch })
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-    if (!isQueryRoute) {
-      history.push('/query');
-    }
+    redirectToQuery();
   };
 
   return (
@@ -83,16 +86,23 @@ export const SearchBar: React.FunctionComponent<SearchBarProps> = ({ onSearch })
       <div className={classes.searchIcon}>
         <Icon>search</Icon>
       </div>
-      <InputBase
-        placeholder="Search…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          redirectToQuery();
         }}
-        inputProps={{ 'aria-label': 'search' }}
-        onChange={handleChange}
-        value={search}
-      />
+      >
+        <InputBase
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={handleChange}
+          value={search}
+        />
+      </form>
     </div>
   );
 };

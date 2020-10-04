@@ -1,14 +1,14 @@
 import { SearchNotebook, SearchResult } from '../types';
 import { getCurrentDateString } from './dateHelpers';
-import { saveResult, getNotebooks, getResults, removeResults } from './storage';
 
 export interface NewNotebook {
   title: string;
 }
+
 type CreateNotebook = (notebook: NewNotebook, notebooks: SearchNotebook[]) => SearchNotebook;
 type RemoveNotebook = (id: number, notebooks: SearchNotebook[]) => SearchNotebook[];
 type FindNotebookById = (id: number, notebooks: SearchNotebook[]) => SearchNotebook | null;
-type AddResultToNotebook = (
+type UpdateNotebook = (
   result: SearchResult,
   notebookId: number,
   notebooks: SearchNotebook[]
@@ -20,45 +20,39 @@ const createNotebook: CreateNotebook = ({ title }, notebooks) => {
   return { id: lastId + 1, title, created_at: getCurrentDateString(), results: [] };
 };
 
-const removeNotebook: RemoveNotebook = (id, notebooks) => {
-  const restNotebooks = notebooks.filter((notebook) => notebook.id !== id);
-  const results = findNotebookById(id, notebooks)?.results;
-  if (results && results.length) {
-    // Remove Results which were present only in this Notebook from storage
-    const restResults = restNotebooks.flatMap((notebook) => notebook.results);
-    const resultsToRemove = results.filter((resultId) => !restResults.includes(resultId));
-    removeResults(resultsToRemove);
-  }
-
-  return restNotebooks;
-};
+const removeNotebook: RemoveNotebook = (id, notebooks) => notebooks.filter((notebook) => notebook.id !== id);
 
 const findNotebookById: FindNotebookById = (id, notebooks) => notebooks.find((notebook) => notebook.id === id) || null;
 
-const getResultsFromNotebook = (notebookId: number): SearchResult[] => {
-  const results = getResults();
-  const notebookResults = getNotebooks().find((notebook: SearchNotebook) => notebook.id === notebookId)?.results || [];
-
-  return notebookResults
-    .map((resultId) => results.find((result) => result.id === resultId))
-    .filter((result) => result !== undefined) as SearchResult[];
-};
-
-const addResultToNotebook: AddResultToNotebook = (result, notebookId, notebooks) => {
-  saveResult(result);
-
-  const notebookResults = notebooks.find((notebook) => notebook.id === notebookId)?.results || [];
-  if (notebookResults.includes(result.id)) {
+const addResultToNotebook: UpdateNotebook = (result, notebookId, notebooks) => {
+  const results = notebooks.find(({ id }) => id === notebookId)?.results || [];
+  if (results.find(({ id }) => result.id === id)) {
     // Notebook already contains given result
     return null;
   }
 
   return notebooks.map((notebook) => {
     if (notebook.id === notebookId) {
-      return { ...notebook, results: [...notebook.results, result.id] };
+      return { ...notebook, results: [...notebook.results, result] };
     }
     return notebook;
   });
 };
 
-export { createNotebook, removeNotebook, findNotebookById, addResultToNotebook, getResultsFromNotebook };
+const removeResultFromNotebook: UpdateNotebook = (result, notebookId, notebooks) => {
+  const results = notebooks.find(({ id }) => id === notebookId)?.results || [];
+  if (!results.length) {
+    return null;
+  }
+
+  const updatedResults = results.filter(({ id }) => id !== result.id);
+
+  return notebooks.map((notebook) => {
+    if (notebook.id === notebookId) {
+      return { ...notebook, results: updatedResults };
+    }
+    return notebook;
+  });
+};
+
+export { createNotebook, removeNotebook, findNotebookById, addResultToNotebook, removeResultFromNotebook };
