@@ -7,6 +7,7 @@ export interface NewNotebook {
 }
 type CreateNotebook = (notebook: NewNotebook, notebooks: SearchNotebook[]) => SearchNotebook;
 type RemoveNotebook = (id: number, notebooks: SearchNotebook[]) => SearchNotebook[];
+type FindNotebookById = (id: number, notebooks: SearchNotebook[]) => SearchNotebook | null;
 type AddResultToNotebook = (
   result: SearchResult,
   notebookId: number,
@@ -20,6 +21,8 @@ const createNotebook: CreateNotebook = ({ title }, notebooks) => {
 };
 
 const removeNotebook: RemoveNotebook = (id, notebooks) => notebooks.filter((notebook) => notebook.id !== id);
+
+const findNotebookById: FindNotebookById = (id, notebooks) => notebooks.find((notebook) => notebook.id === id) || null;
 
 const getResultsFromNotebook = (notebookId: number): SearchResult[] => {
   const results = getResults();
@@ -47,4 +50,4 @@ const addResultToNotebook: AddResultToNotebook = (result, notebookId, notebooks)
   });
 };
 
-export { createNotebook, removeNotebook, addResultToNotebook, getResultsFromNotebook };
+export { createNotebook, removeNotebook, findNotebookById, addResultToNotebook, getResultsFromNotebook };

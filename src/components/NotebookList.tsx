@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Divider, List, ListItem, ListItemSecondaryAction, ListItemText, Paper } from '@material-ui/core';
 import { formatDateString } from '../libs/dateHelpers';
 import { SearchNotebook } from '../types';
@@ -18,7 +19,7 @@ export const NotebookList: React.FunctionComponent<NotebookListProps> = ({ noteb
     <Paper variant="outlined">
       <List>
         {notebooks.map(({ id, title, created_at }) => (
-          <ListItem key={id} button>
+          <ListItem key={id} button component={Link} to={`/notebook/${id}`}>
             <ListItemText primary={title} secondary={formatDateString(created_at)} />
             <ListItemSecondaryAction>
               <NotebookRemove title={title} onRemove={createRemoveHandler(id)} />

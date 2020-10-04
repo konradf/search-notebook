@@ -1,10 +1,9 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { Container, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { NavigationBar } from './components/NavigationBar';
 import { NotebookList } from './components/NotebookList';
-import { hits } from './mocks/search_results.json';
-import { Results } from './components/Results';
 import { SearchBar } from './components/SearchBar';
 import { NotebookCreate } from './components/NotebookCreate';
 import { Notification, NotificationVariant } from './components/Notification';
@@ -12,6 +11,8 @@ import { getNotebooks, saveNotebooks } from './libs/storage';
 import { addResultToNotebook, createNotebook, NewNotebook, removeNotebook } from './libs/notebook';
 import { SearchNotebook, SearchResult } from './types';
 import { useNotification } from './hooks/useNotification';
+import { QueryResults } from './components/QueryResults';
+import { NotebookResults } from './components/NotebookResults';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,9 +44,9 @@ const App = () => {
     if (updatedNotebooks !== null) {
       setNotebooks(updatedNotebooks);
       showNotification({ message: 'Result has been saved', variant: NotificationVariant.sucess });
-    } else {
-      showNotification({ message: 'Result was already added to that Notebook', variant: NotificationVariant.warning });
+      return;
     }
+    showNotification({ message: 'Result was already added to that Notebook', variant: NotificationVariant.warning });
   };
 
   return (
@@ -61,7 +62,14 @@ const App = () => {
             </NotebookList>
           </Grid>
           <Grid item xs={7} sm={8}>
-            <Results results={hits} notebooks={notebooks} onAdd={handleAddResultToNotebook} />
+            <Switch>
+              <Route path="/" exact>
+                <QueryResults notebooks={notebooks} onAdd={handleAddResultToNotebook} />
+              </Route>
+              <Route path="/notebook/:id">
+                <NotebookResults notebooks={notebooks} />
+              </Route>
+            </Switch>
           </Grid>
         </Grid>
       </Container>
