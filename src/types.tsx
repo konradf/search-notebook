@@ -1,5 +1,6 @@
 export interface SearchResult {
   id: string;
+  title: string;
   query_id: string;
   author: string;
   points: number;

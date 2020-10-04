@@ -33,7 +33,7 @@ export const ResultAdd: React.FunctionComponent<ResultAddProps> = ({ notebooks, 
   };
 
   return (
-    <div>
+    <>
       <ListItemSecondaryAction>
         <IconButton color="default" edge="end" aria-label="save" onClick={handleOpen}>
           <Icon>bookmark</Icon>
@@ -60,6 +60,6 @@ export const ResultAdd: React.FunctionComponent<ResultAddProps> = ({ notebooks, 
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };

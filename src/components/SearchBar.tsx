@@ -1,6 +1,8 @@
 import React from 'react';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { Icon, InputBase } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
+import { useDebounce } from '../hooks/useDebounce';
 
 const useStyles = makeStyles((theme) => ({
   search: {
@@ -36,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     [theme.breakpoints.up('sm')]: {
-      width: '200px',
+      width: '180px',
       '&:focus': {
-        width: '260px',
+        width: '250px',
       },
     },
     [theme.breakpoints.up('md')]: {
@@ -50,8 +52,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  onSearch: (query: string) => void;
+}
+
+export const SearchBar: React.FunctionComponent<SearchBarProps> = ({ onSearch }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const isQueryRoute = useRouteMatch('/query');
+
+  const [search, setSearch] = React.useState('');
+  const searchValue = useDebounce(search, 500);
+
+  React.useEffect(() => {
+    const trimSearchValue = searchValue.trim();
+    if (trimSearchValue.length) {
+      onSearch(trimSearchValue);
+    }
+  }, [onSearch, searchValue]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    if (!isQueryRoute) {
+      history.push('/query');
+    }
+  };
 
   return (
     <div className={classes.search}>
@@ -65,6 +90,8 @@ export const SearchBar = () => {
           input: classes.inputInput,
         }}
         inputProps={{ 'aria-label': 'search' }}
+        onChange={handleChange}
+        value={search}
       />
     </div>
   );

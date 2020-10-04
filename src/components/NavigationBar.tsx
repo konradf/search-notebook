@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, IconButton, Icon, Toolbar, Typography } from '@material-ui/core';
 
@@ -9,13 +10,10 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     justifyContent: 'space-between',
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
+      display: 'inline-block',
     },
   },
 }));
@@ -26,11 +24,16 @@ export const NavigationBar: React.FunctionComponent = ({ children }) => {
   return (
     <AppBar position="static" className={classes.grow}>
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h6" className={classes.title}>
-          Search Notebook
+        <Typography>
+          <IconButton edge="start" color="inherit" aria-label="logo" component={Link} to="/">
+            <Icon>event_note</Icon>
+          </IconButton>
+          <Typography component="span" variant="h6" className={classes.title}>
+            Search Notebook
+          </Typography>
         </Typography>
         {children}
-        <IconButton color="inherit">
+        <IconButton edge="end" color="inherit">
           <Icon>equalizer</Icon>
         </IconButton>
       </Toolbar>

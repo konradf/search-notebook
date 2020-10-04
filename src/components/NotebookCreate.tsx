@@ -59,9 +59,9 @@ export const NotebookCreate: React.FunctionComponent<NotebookCreateProps> = ({ o
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            id="title"
             label="Title"
-            type="email"
+            type="text"
             required
             value={title}
             onChange={handleChange}

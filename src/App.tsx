@@ -13,6 +13,8 @@ import { SearchNotebook, SearchResult } from './types';
 import { useNotification } from './hooks/useNotification';
 import { QueryResults } from './components/QueryResults';
 import { NotebookResults } from './components/NotebookResults';
+import { Homepage } from './components/Homepage';
+import { MESSAGE } from './libs/messages';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,7 +24,13 @@ const useStyles = makeStyles((theme) => ({
 
 const App = () => {
   const classes = useStyles();
+
   const { notification, showNotification, hideNotification } = useNotification();
+
+  const [query, setQuery] = React.useState('');
+  const handleSearch = (query: string) => {
+    setQuery(query);
+  };
 
   const [notebooks, setNotebooks] = React.useState<SearchNotebook[]>(getNotebooks());
   React.useEffect(() => {
@@ -31,28 +39,28 @@ const App = () => {
 
   const handleCreateNotebook = (notebook: NewNotebook) => {
     setNotebooks([...notebooks, createNotebook(notebook, notebooks)]);
-    showNotification({ message: 'Notebook has been created', variant: NotificationVariant.success });
+    showNotification({ message: MESSAGE.notebookAdded, variant: NotificationVariant.success });
   };
 
   const handleRemoveNotebook = (id: number) => {
     setNotebooks(removeNotebook(id, notebooks));
-    showNotification({ message: 'Notebook has been removed', variant: NotificationVariant.info });
+    showNotification({ message: MESSAGE.notebookRemoved, variant: NotificationVariant.info });
   };
 
   const handleAddResultToNotebook = (result: SearchResult, notebookId: number) => {
     const updatedNotebooks = addResultToNotebook(result, notebookId, notebooks);
     if (updatedNotebooks !== null) {
       setNotebooks(updatedNotebooks);
-      showNotification({ message: 'Result has been saved', variant: NotificationVariant.success });
+      showNotification({ message: MESSAGE.resultAdded, variant: NotificationVariant.success });
       return;
     }
-    showNotification({ message: 'Result was already added to that Notebook', variant: NotificationVariant.warning });
+    showNotification({ message: MESSAGE.resultAlreadyAdded, variant: NotificationVariant.warning });
   };
 
   return (
     <>
       <NavigationBar>
-        <SearchBar />
+        <SearchBar onSearch={handleSearch} />
       </NavigationBar>
       <Container maxWidth="md" className={classes.container}>
         <Grid container spacing={1}>
@@ -64,7 +72,10 @@ const App = () => {
           <Grid item xs={7} sm={8}>
             <Switch>
               <Route path="/" exact>
-                <QueryResults notebooks={notebooks} onAdd={handleAddResultToNotebook} />
+                <Homepage />
+              </Route>
+              <Route path="/query">
+                <QueryResults query={query} notebooks={notebooks} onAdd={handleAddResultToNotebook} />
               </Route>
               <Route path="/notebook/:id">
                 <NotebookResults notebooks={notebooks} />
