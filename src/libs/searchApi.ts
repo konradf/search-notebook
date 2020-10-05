@@ -24,15 +24,16 @@ type FetchResults = (
 ) => Promise<{
   results: SearchResult[];
   hits: number;
+  pages: number;
 }>;
 
-const fetchResults: FetchResults = async (query, page = 1) => {
+const fetchResults: FetchResults = async (query, page = 0) => {
   const response = await fetch(getApiUrl({ query, page }));
-  const { hits, nbHits } = await response.json();
+  const { hits, nbHits, nbPages } = await response.json();
 
   // TODO: Error handling...
 
-  return { results: mapResults(query, hits), hits: nbHits };
+  return { results: mapResults(query, hits), hits: nbHits, pages: nbPages };
 };
 
 export { fetchResults };

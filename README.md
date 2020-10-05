@@ -5,6 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Unit tests
 - E2E tests (lack of time)
 - Handle fetch errors with user friendly messages
+- Refactor QueryResults to useReducer, too many state values
 
 ## Scripts
 

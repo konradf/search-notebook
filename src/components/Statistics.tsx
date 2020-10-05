@@ -8,7 +8,6 @@ export const Statistics: React.FunctionComponent = () => {
   const [queries] = React.useState<SearchQuery[]>(getQueries());
   const summary = getQueriesSummary(queries);
 
-  console.log(Object.keys(summary));
   return (
     <TableContainer component={Paper}>
       <Table aria-label="statistics">
