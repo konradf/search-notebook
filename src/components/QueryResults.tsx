@@ -3,11 +3,12 @@ import { Box, CircularProgress, Grid, List, Paper, Typography } from '@material-
 import { Pagination } from '@material-ui/lab';
 import { ResultAdd } from './ResultAdd';
 import { Result } from './Result';
-import { fetchResults } from '../libs/searchApi';
 import { createSearchQuery } from '../libs/query';
 import { saveQuery } from '../libs/storage';
 import { SearchNotebook, SearchQuery, SearchResult } from '../types';
 import { makeStyles } from '@material-ui/core/styles';
+import { useFetch } from '../hooks/useFetch';
+import { usePrevious } from '../hooks/usePrevious';
 
 interface ResultsProps {
   query: string;
@@ -24,31 +25,16 @@ const useStyles = makeStyles((theme) => ({
 
 export const QueryResults = ({ query, notebooks, onAdd }: ResultsProps) => {
   const classes = useStyles();
-  // TODO: Refactor to useReducer
   const [searchQuery, setSearchQuery] = React.useState<SearchQuery>();
-  const [results, setResults] = React.useState<SearchResult[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const [page, setPage] = React.useState(0);
-  const [pages, setPages] = React.useState(0);
+  const { results, page, pages, hits, loading, setPage } = useFetch(query);
+  const prevLoading = usePrevious(loading);
 
   React.useEffect(() => {
-    setPage(0);
-    setLoading(true);
-    fetchResults(query).then(({ results, hits, pages }) => {
+    // Create query only when loading is finished and we are on first page
+    if (!loading && prevLoading && page === 0) {
       setSearchQuery(createSearchQuery(query, hits));
-      setResults(results);
-      setPages(pages);
-      setLoading(false);
-    });
-  }, [query]);
-
-  React.useEffect(() => {
-    setLoading(true);
-    fetchResults(query, page).then(({ results }) => {
-      setResults(results);
-      setLoading(false);
-    });
-  }, [page]);
+    }
+  }, [prevLoading, loading, query, hits, page]);
 
   React.useEffect(() => {
     if (searchQuery) {
